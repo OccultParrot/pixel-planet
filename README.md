@@ -2,6 +2,8 @@
 
 A fun little shader project using noise to generate a unique planet!
 
+![Screenshot of Planet](https://github.com/OccultParrot/pixel-planet/blob/main/assets/Screenshot%202025-07-16%20223937.png)
+
 # Table of Contents
 - [Description](#description)
 - [How to Use](#how-to-use)
