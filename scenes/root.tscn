@@ -37,11 +37,16 @@ shader_parameter/pixel_size = 600
 shader_parameter/noise = SubResource("NoiseTexture2D_lrqlo")
 shader_parameter/displacement_strength = 0.082
 shader_parameter/mountain_threshold = 0.8
+shader_parameter/mountain_color = Color(0.749, 0.749, 0.749, 1)
 shader_parameter/forest_threshold = 0.55
-shader_parameter/forest_color = Color(93, 191, 71, 1)
+shader_parameter/forest_color = Color(0.3647, 0.749, 0.2784, 1)
 shader_parameter/grassland_threshold = 0.5
+shader_parameter/grassland_color = Color(0.5059, 0.9804, 0.4, 1)
 shader_parameter/beach_threshold = 0.48
+shader_parameter/beach_color = Color(1, 1, 0.749, 1)
 shader_parameter/shore_threshold = 0.43
+shader_parameter/shore_color = Color(0.2, 0.7059, 1, 1)
+shader_parameter/ocean_color = Color(0.1098, 0.4588, 0.7882, 1)
 
 [sub_resource type="SphereMesh" id="SphereMesh_vho56"]
 material = SubResource("ShaderMaterial_twpsu")
