@@ -1,2 +1,3 @@
 # pixel-planet
-A planet generator with a pixel art aesthetic.
+
+A fun little shader project using noise to generate a unique planet!
