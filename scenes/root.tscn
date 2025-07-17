@@ -17,6 +17,7 @@ shader = ExtResource("1_lrqlo")
 shader_parameter/noise = SubResource("NoiseTexture2D_jh1ax")
 shader_parameter/pixel_size = 600
 shader_parameter/cloud_threshold = 0.7
+shader_parameter/time_scale = 0.417
 
 [sub_resource type="SphereMesh" id="SphereMesh_j287u"]
 material = SubResource("ShaderMaterial_kycxp")
