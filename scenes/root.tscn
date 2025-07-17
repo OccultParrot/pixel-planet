@@ -1,0 +1,64 @@
+[gd_scene load_steps=13 format=3 uid="uid://dothce4yh3s3l"]
+
+[ext_resource type="Shader" uid="uid://bwnctdj1bptlq" path="res://shaders/planet.gdshader" id="1_j5px3"]
+[ext_resource type="Shader" uid="uid://prjw2kdeupum" path="res://shaders/clouds.gdshader" id="1_lrqlo"]
+[ext_resource type="Script" uid="uid://cmgxqquhulqek" path="res://scripts/clouds.gd" id="2_sqa0i"]
+[ext_resource type="Script" uid="uid://c5vm2en76867d" path="res://scripts/planet.gd" id="2_twpsu"]
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_sqa0i"]
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_jh1ax"]
+seamless = true
+noise = SubResource("FastNoiseLite_sqa0i")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_kycxp"]
+render_priority = 0
+shader = ExtResource("1_lrqlo")
+shader_parameter/noise = SubResource("NoiseTexture2D_jh1ax")
+shader_parameter/pixel_size = 600
+shader_parameter/cloud_threshold = 0.7
+
+[sub_resource type="SphereMesh" id="SphereMesh_j287u"]
+material = SubResource("ShaderMaterial_kycxp")
+radius = 0.55
+height = 1.05
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_twpsu"]
+noise_type = 3
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_lrqlo"]
+seamless = true
+noise = SubResource("FastNoiseLite_twpsu")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_twpsu"]
+render_priority = 0
+shader = ExtResource("1_j5px3")
+shader_parameter/pixel_size = 600
+shader_parameter/noise = SubResource("NoiseTexture2D_lrqlo")
+shader_parameter/displacement_strength = 0.082
+shader_parameter/mountain_threshold = 0.8
+shader_parameter/forest_threshold = 0.55
+shader_parameter/forest_color = Color(93, 191, 71, 1)
+shader_parameter/grassland_threshold = 0.5
+shader_parameter/beach_threshold = 0.48
+shader_parameter/shore_threshold = 0.43
+
+[sub_resource type="SphereMesh" id="SphereMesh_vho56"]
+material = SubResource("ShaderMaterial_twpsu")
+
+[node name="Root" type="Node3D"]
+
+[node name="Clouds" type="MeshInstance3D" parent="."]
+mesh = SubResource("SphereMesh_j287u")
+script = ExtResource("2_sqa0i")
+
+[node name="Planet" type="MeshInstance3D" parent="."]
+mesh = SubResource("SphereMesh_vho56")
+script = ExtResource("2_twpsu")
+rotation_speed = 5.0
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1.07301)
+visible = false
+
+[connection signal="ready" from="Planet" to="Planet" method="_on_ready"]
