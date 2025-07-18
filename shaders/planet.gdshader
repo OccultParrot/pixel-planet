@@ -5,7 +5,7 @@ uniform int pixel_size = 600;
 
 group_uniforms Noise;
 uniform sampler2D noise;
-uniform float displacement_strength: hint_range(0.0, 2.0) = 0.5;
+uniform float displacement_coefficient: hint_range(0.0, 1.0) = 0.5;
 
 group_uniforms Mountains;
 uniform float mountain_threshold: hint_range(0.0, 1.0) = 0.8;
@@ -36,6 +36,15 @@ group_uniforms oceans;
 uniform vec3 ocean_color: source_color = vec3(0.1098, 0.4588, 0.7882);
 group_uniforms;
 
+group_uniforms latitude;
+uniform float pole_threshold: hint_range(0.0, 1.0) = 0.35;
+group_uniforms;
+
+// Linear Interpolation Function.
+float lerp(float a, float b, float t) {
+	return a + (b - a) * t;
+}
+
 vec3 determine_color(float sample){
 	if (sample > mountain_threshold) {
 		return mountain_color;
@@ -53,13 +62,27 @@ vec3 determine_color(float sample){
 }
 
 void vertex() {
-	// UNCOMMENT TO MAKE BUMPY
-	//vec4 sample = texture(noise, UV);
-	//float displacement = sample.r * displacement_strength;
-	//VERTEX += NORMAL * displacement;
+	float sample = texture(noise, UV).r;
+	if (sample < grassland_threshold) {
+		sample = beach_threshold;
+	}
+	
+	VERTEX = NORMAL * lerp(beach_threshold, sample, displacement_coefficient / 10.0);
 }
 
 void fragment() {
+	// The UV is a range from 0.0 -> 1.0, so 0.5 is the equator.
+	float dist_from_equator = distance(0.5, UV.y);
+	
+	// The floor(UV * pixel_size) / pixel_size is how we make it pixelated. 
+	// It has some weird artifacts we need to fix at large pixel sizes though... To do with the fact its a sphere I think
 	float sample = texture(noise, floor(UV * float(pixel_size)) / float(pixel_size)).r;
-	ALBEDO = determine_color(sample);
+	
+	vec3 point_color =  determine_color(sample);
+	
+	if (dist_from_equator > pole_threshold) {
+		point_color = min(point_color + vec3(0.1), vec3(1.0));
+	}
+	
+	ALBEDO = point_color;
 }

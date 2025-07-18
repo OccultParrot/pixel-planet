@@ -17,26 +17,26 @@ shader = ExtResource("1_lrqlo")
 shader_parameter/noise = SubResource("NoiseTexture2D_jh1ax")
 shader_parameter/pixel_size = 600
 shader_parameter/cloud_threshold = 0.7
-shader_parameter/time_scale = 0.417
 
 [sub_resource type="SphereMesh" id="SphereMesh_j287u"]
 material = SubResource("ShaderMaterial_kycxp")
 radius = 0.55
 height = 1.05
 
-[sub_resource type="FastNoiseLite" id="FastNoiseLite_twpsu"]
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_j287u"]
 noise_type = 3
+seed = 7
 
-[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_lrqlo"]
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_5sfjl"]
 seamless = true
-noise = SubResource("FastNoiseLite_twpsu")
+noise = SubResource("FastNoiseLite_j287u")
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_twpsu"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_3hfy5"]
 render_priority = 0
 shader = ExtResource("1_j5px3")
 shader_parameter/pixel_size = 600
-shader_parameter/noise = SubResource("NoiseTexture2D_lrqlo")
-shader_parameter/displacement_strength = 0.082
+shader_parameter/noise = SubResource("NoiseTexture2D_5sfjl")
+shader_parameter/displacement_coefficient = 0.5
 shader_parameter/mountain_threshold = 0.8
 shader_parameter/mountain_color = Color(0.749, 0.749, 0.749, 1)
 shader_parameter/forest_threshold = 0.55
@@ -48,9 +48,10 @@ shader_parameter/beach_color = Color(1, 1, 0.749, 1)
 shader_parameter/shore_threshold = 0.43
 shader_parameter/shore_color = Color(0.2, 0.7059, 1, 1)
 shader_parameter/ocean_color = Color(0.1098, 0.4588, 0.7882, 1)
+shader_parameter/pole_threshold = 0.35
 
 [sub_resource type="SphereMesh" id="SphereMesh_vho56"]
-material = SubResource("ShaderMaterial_twpsu")
+material = SubResource("ShaderMaterial_3hfy5")
 
 [node name="Root" type="Node3D"]
 
