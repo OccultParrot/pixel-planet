@@ -13,4 +13,9 @@ config_version=5
 config/name="pixel-planet"
 run/main_scene="res://scenes/root.tscn"
 config/features=PackedStringArray("4.4", "Forward Plus")
+boot_splash/bg_color=Color(0.243137, 0.243137, 0.243137, 1)
 config/icon="res://icon.svg"
+
+[display]
+
+window/size/borderless=true
