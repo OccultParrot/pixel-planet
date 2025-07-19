@@ -1,9 +1,11 @@
-[gd_scene load_steps=15 format=3 uid="uid://dothce4yh3s3l"]
+[gd_scene load_steps=20 format=3 uid="uid://dothce4yh3s3l"]
 
 [ext_resource type="Shader" uid="uid://bwnctdj1bptlq" path="res://shaders/planet.gdshader" id="1_j5px3"]
+[ext_resource type="Script" uid="uid://bgc6ogilues7" path="res://scripts/root.gd" id="1_kycxp"]
 [ext_resource type="Shader" uid="uid://prjw2kdeupum" path="res://shaders/clouds.gdshader" id="1_lrqlo"]
 [ext_resource type="Script" uid="uid://cmgxqquhulqek" path="res://scripts/clouds.gd" id="2_sqa0i"]
 [ext_resource type="Script" uid="uid://c5vm2en76867d" path="res://scripts/planet.gd" id="2_twpsu"]
+[ext_resource type="Shader" uid="uid://d8ntmm6fyn6e" path="res://shaders/sky.gdshader" id="5_jh1ax"]
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_sqa0i"]
 
@@ -45,13 +47,14 @@ shader_parameter/pixel_size = 600
 shader_parameter/landmass_noise = SubResource("NoiseTexture2D_kycxp")
 shader_parameter/rainfall_noise = SubResource("NoiseTexture2D_5sfjl")
 shader_parameter/displacement_coefficient = 0.5
-shader_parameter/landmass_threshold = 0.5
+shader_parameter/landmass_threshold = 0.533
 shader_parameter/beach_width = 0.017
 shader_parameter/shore_width = 0.028
-shader_parameter/pole_threshold = 0.35
+shader_parameter/ocean_width = 0.13
 shader_parameter/beach_color = Color(0.823529, 0.788235, 0.647059, 1)
 shader_parameter/shore_color = Color(0.54902, 0.670588, 0.631373, 1)
 shader_parameter/ocean_color = Color(0.294118, 0.447059, 0.431373, 1)
+shader_parameter/deep_ocean_color = Color(0.203705, 0.347656, 0.332892, 1)
 shader_parameter/temperate_color = Color(0.301961, 0.270588, 0.223529, 1)
 shader_parameter/tundra_color = Color(0.8125, 0.938477, 1, 1)
 shader_parameter/cold_color = Color(0.457764, 0.585938, 0.498819, 1)
@@ -64,7 +67,18 @@ shader_parameter/DEBUG_altitude_noise = false
 [sub_resource type="SphereMesh" id="SphereMesh_vho56"]
 material = SubResource("ShaderMaterial_3hfy5")
 
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_j287u"]
+shader = ExtResource("5_jh1ax")
+
+[sub_resource type="Sky" id="Sky_5sfjl"]
+sky_material = SubResource("ShaderMaterial_j287u")
+
+[sub_resource type="Environment" id="Environment_3hfy5"]
+background_mode = 2
+sky = SubResource("Sky_5sfjl")
+
 [node name="Root" type="Node3D"]
+script = ExtResource("1_kycxp")
 
 [node name="Clouds" type="MeshInstance3D" parent="."]
 mesh = SubResource("SphereMesh_j287u")
@@ -78,5 +92,8 @@ rotation_speed = 5.0
 [node name="Camera3D" type="Camera3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1.07301)
 visible = false
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_3hfy5")
 
 [connection signal="ready" from="Planet" to="Planet" method="_on_ready"]
