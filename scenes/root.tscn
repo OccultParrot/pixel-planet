@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://dothce4yh3s3l"]
+[gd_scene load_steps=15 format=3 uid="uid://dothce4yh3s3l"]
 
 [ext_resource type="Shader" uid="uid://bwnctdj1bptlq" path="res://shaders/planet.gdshader" id="1_j5px3"]
 [ext_resource type="Shader" uid="uid://prjw2kdeupum" path="res://shaders/clouds.gdshader" id="1_lrqlo"]
@@ -17,15 +17,22 @@ shader = ExtResource("1_lrqlo")
 shader_parameter/noise = SubResource("NoiseTexture2D_jh1ax")
 shader_parameter/pixel_size = 600
 shader_parameter/cloud_threshold = 0.7
+shader_parameter/cloud_color = Color(0.670588, 0.607843, 0.556863, 1)
 
 [sub_resource type="SphereMesh" id="SphereMesh_j287u"]
 material = SubResource("ShaderMaterial_kycxp")
 radius = 0.55
 height = 1.05
 
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_jh1ax"]
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_kycxp"]
+seamless = true
+noise = SubResource("FastNoiseLite_jh1ax")
+
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_j287u"]
 noise_type = 3
-seed = 7
+frequency = 0.0303
 
 [sub_resource type="NoiseTexture2D" id="NoiseTexture2D_5sfjl"]
 seamless = true
@@ -35,20 +42,24 @@ noise = SubResource("FastNoiseLite_j287u")
 render_priority = 0
 shader = ExtResource("1_j5px3")
 shader_parameter/pixel_size = 600
-shader_parameter/noise = SubResource("NoiseTexture2D_5sfjl")
+shader_parameter/landmass_noise = SubResource("NoiseTexture2D_kycxp")
+shader_parameter/rainfall_noise = SubResource("NoiseTexture2D_5sfjl")
 shader_parameter/displacement_coefficient = 0.5
-shader_parameter/mountain_threshold = 0.8
-shader_parameter/mountain_color = Color(0.749, 0.749, 0.749, 1)
-shader_parameter/forest_threshold = 0.55
-shader_parameter/forest_color = Color(0.3647, 0.749, 0.2784, 1)
-shader_parameter/grassland_threshold = 0.5
-shader_parameter/grassland_color = Color(0.5059, 0.9804, 0.4, 1)
-shader_parameter/beach_threshold = 0.48
-shader_parameter/beach_color = Color(1, 1, 0.749, 1)
-shader_parameter/shore_threshold = 0.43
-shader_parameter/shore_color = Color(0.2, 0.7059, 1, 1)
-shader_parameter/ocean_color = Color(0.1098, 0.4588, 0.7882, 1)
+shader_parameter/landmass_threshold = 0.5
+shader_parameter/beach_width = 0.017
+shader_parameter/shore_width = 0.028
 shader_parameter/pole_threshold = 0.35
+shader_parameter/beach_color = Color(0.823529, 0.788235, 0.647059, 1)
+shader_parameter/shore_color = Color(0.54902, 0.670588, 0.631373, 1)
+shader_parameter/ocean_color = Color(0.294118, 0.447059, 0.431373, 1)
+shader_parameter/temperate_color = Color(0.301961, 0.270588, 0.223529, 1)
+shader_parameter/tundra_color = Color(0.8125, 0.938477, 1, 1)
+shader_parameter/cold_color = Color(0.457764, 0.585938, 0.498819, 1)
+shader_parameter/desert_color = Color(0.819608, 0.694118, 0.529412, 1)
+shader_parameter/dry_color = Color(0.466667, 0.454902, 0.231373, 1)
+shader_parameter/DEBUG_temp_gradient = false
+shader_parameter/DEBUG_rainfall_noise = false
+shader_parameter/DEBUG_altitude_noise = false
 
 [sub_resource type="SphereMesh" id="SphereMesh_vho56"]
 material = SubResource("ShaderMaterial_3hfy5")
