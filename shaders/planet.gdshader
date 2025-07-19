@@ -11,15 +11,16 @@ group_uniforms;
 
 group_uniforms Landmass;
 uniform float landmass_threshold: hint_range(0.0, 1.0) = 0.5;
-uniform float beach_width: hint_range(0.0, 0.05) = 0.012;
+uniform float beach_width: hint_range(0.0, 0.05) = 0.017;
 uniform float shore_width: hint_range(0.0, 0.05) = 0.028;
-uniform float pole_threshold: hint_range(0.0, 1.0) = 0.35;
+uniform float ocean_width: hint_range(0.0, 0.5) = 0.13;
 group_uniforms;
 
 group_uniforms Colors;
 uniform vec3 beach_color: source_color = vec3(1.0, 1.0, 0.749);
 uniform vec3 shore_color: source_color = vec3(0.2, 0.7059, 1.0);
 uniform vec3 ocean_color: source_color = vec3(0.1098, 0.4588, 0.7882);
+uniform vec3 deep_ocean_color: source_color = vec3(0);
 uniform vec3 temperate_color: source_color = vec3(0);
 uniform vec3 tundra_color: source_color = vec3(1);
 uniform vec3 cold_color: source_color = vec3(0);
@@ -46,6 +47,7 @@ int zone(float value, int num_zones) {
 
 vec3 determine_color(float altitude, float rainfall, float temperature) {
 	// === Ocean and beaches ===
+	if (altitude < landmass_threshold - shore_width - ocean_width) return deep_ocean_color;
 	if (altitude < landmass_threshold - shore_width) return ocean_color;
 	if (altitude < landmass_threshold) return shore_color;
 	if (altitude < landmass_threshold + beach_width) return beach_color;
