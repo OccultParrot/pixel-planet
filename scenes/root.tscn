@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=3 uid="uid://dothce4yh3s3l"]
+[gd_scene load_steps=22 format=3 uid="uid://dothce4yh3s3l"]
 
 [ext_resource type="Shader" uid="uid://bwnctdj1bptlq" path="res://shaders/planet.gdshader" id="1_j5px3"]
 [ext_resource type="Script" uid="uid://bgc6ogilues7" path="res://scripts/root.gd" id="1_kycxp"]
@@ -40,12 +40,22 @@ frequency = 0.0303
 seamless = true
 noise = SubResource("FastNoiseLite_j287u")
 
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_kycxp"]
+noise_type = 3
+frequency = 0.2236
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_j287u"]
+seamless = true
+noise = SubResource("FastNoiseLite_kycxp")
+
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_3hfy5"]
 render_priority = 0
 shader = ExtResource("1_j5px3")
 shader_parameter/pixel_size = 600
 shader_parameter/landmass_noise = SubResource("NoiseTexture2D_kycxp")
 shader_parameter/rainfall_noise = SubResource("NoiseTexture2D_5sfjl")
+shader_parameter/temperature_noise = SubResource("NoiseTexture2D_j287u")
+shader_parameter/temperature_noise_impact = 0.148
 shader_parameter/displacement_coefficient = 0.5
 shader_parameter/landmass_threshold = 0.533
 shader_parameter/beach_width = 0.017

@@ -6,6 +6,8 @@ uniform int pixel_size = 600;
 group_uniforms Noise;
 uniform sampler2D landmass_noise;
 uniform sampler2D rainfall_noise;
+uniform sampler2D temperature_noise;
+uniform float temperature_noise_impact: hint_range(0.0, 1.0) = 0.5;
 uniform float displacement_coefficient: hint_range(0.0, 1.0) = 0.5;
 group_uniforms;
 
@@ -45,6 +47,10 @@ int zone(float value, int num_zones) {
 	return int(clamp(value * float(num_zones), 0.0, float(num_zones - 1)));
 }
 
+vec4 sample(sampler2D source, vec2 pos) {
+	return texture(source, pixelate(pos, float(pixel_size)));
+}
+
 vec3 determine_color(float altitude, float rainfall, float temperature) {
 	// === Ocean and beaches ===
 	if (altitude < landmass_threshold - shore_width - ocean_width) return deep_ocean_color;
@@ -76,11 +82,15 @@ vec3 determine_color(float altitude, float rainfall, float temperature) {
 //}
 
 void fragment() {
-	float altitude = texture(landmass_noise, pixelate(UV, float(pixel_size))).r;
-	float rainfall = texture(rainfall_noise, pixelate(UV, float(pixel_size))).r;
+	float altitude = sample(landmass_noise, UV).r;
+	float rainfall = sample(rainfall_noise, UV).r;
 	// The UV is a range from 0.0 -> 1.0, so 0.5 is the equator.
 	// By scaling it by 2 we made it a range from 0.0 -> 0.5 into a range from 0.0 -> 1.0
 	float temperature = distance(0.5, UV.y) * 2.0;
+	
+	// Our temperature is a hard gradient from 0 at the center to 1 at the top and bottom.
+	// To help break up the hard lines, we add a layer of noise on top (Clamped to 0 and 1).
+	temperature = clamp(temperature + sample(temperature_noise, UV).r * temperature_noise_impact, 0.0, 1.0);
 	
 	ALBEDO = determine_color(altitude, rainfall, temperature);
 	
