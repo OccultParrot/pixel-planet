@@ -7,70 +7,75 @@
 [ext_resource type="Script" uid="uid://c5vm2en76867d" path="res://scripts/planet.gd" id="2_twpsu"]
 [ext_resource type="Shader" uid="uid://d8ntmm6fyn6e" path="res://shaders/sky.gdshader" id="5_jh1ax"]
 
-[sub_resource type="FastNoiseLite" id="FastNoiseLite_sqa0i"]
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_kycxp"]
+noise_type = 3
+seed = 381899643
+frequency = 0.0173
 
-[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_jh1ax"]
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_j287u"]
+seed = -68769988
+frequency = 0.0173
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_5sfjl"]
+seed = 1577831285
+frequency = 0.0189
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_3hfy5"]
+noise_type = 3
+seed = 1336062230
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_kycxp"]
 seamless = true
-noise = SubResource("FastNoiseLite_sqa0i")
+noise = SubResource("FastNoiseLite_3hfy5")
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_kycxp"]
 render_priority = 0
 shader = ExtResource("1_lrqlo")
-shader_parameter/noise = SubResource("NoiseTexture2D_jh1ax")
+shader_parameter/noise = SubResource("NoiseTexture2D_kycxp")
 shader_parameter/pixel_size = 600
 shader_parameter/cloud_threshold = 0.7
-shader_parameter/cloud_color = Color(0.851563, 0.849613, 0.801666, 1)
+shader_parameter/cloud_color = Color(0.960784, 0.960784, 0.960784, 1)
 
 [sub_resource type="SphereMesh" id="SphereMesh_j287u"]
 material = SubResource("ShaderMaterial_kycxp")
 radius = 0.55
 height = 1.05
 
-[sub_resource type="FastNoiseLite" id="FastNoiseLite_jh1ax"]
-
-[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_kycxp"]
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_j287u"]
 seamless = true
-noise = SubResource("FastNoiseLite_jh1ax")
-
-[sub_resource type="FastNoiseLite" id="FastNoiseLite_j287u"]
-noise_type = 3
-frequency = 0.0303
+noise = SubResource("FastNoiseLite_kycxp")
 
 [sub_resource type="NoiseTexture2D" id="NoiseTexture2D_5sfjl"]
 seamless = true
 noise = SubResource("FastNoiseLite_j287u")
 
-[sub_resource type="FastNoiseLite" id="FastNoiseLite_kycxp"]
-noise_type = 3
-frequency = 0.2236
-
-[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_j287u"]
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_3hfy5"]
 seamless = true
-noise = SubResource("FastNoiseLite_kycxp")
+noise = SubResource("FastNoiseLite_5sfjl")
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_3hfy5"]
 render_priority = 0
 shader = ExtResource("1_j5px3")
 shader_parameter/pixel_size = 600
-shader_parameter/landmass_noise = SubResource("NoiseTexture2D_kycxp")
+shader_parameter/landmass_noise = SubResource("NoiseTexture2D_j287u")
 shader_parameter/rainfall_noise = SubResource("NoiseTexture2D_5sfjl")
-shader_parameter/temperature_noise = SubResource("NoiseTexture2D_j287u")
-shader_parameter/temperature_noise_impact = 0.088
-shader_parameter/displacement_coefficient = 0.0
-shader_parameter/landmass_threshold = 0.533
+shader_parameter/temperature_noise = SubResource("NoiseTexture2D_3hfy5")
+shader_parameter/temperature_noise_impact = 0.5
+shader_parameter/displacement_coefficient = 0.5
+shader_parameter/landmass_threshold = 0.5
 shader_parameter/beach_width = 0.017
 shader_parameter/shore_width = 0.028
 shader_parameter/ocean_width = 0.13
 shader_parameter/beach_color = Color(0.823529, 0.788235, 0.647059, 1)
 shader_parameter/shore_color = Color(0.54902, 0.670588, 0.631373, 1)
 shader_parameter/ocean_color = Color(0.294118, 0.447059, 0.431373, 1)
-shader_parameter/deep_ocean_color = Color(0.203705, 0.347656, 0.332892, 1)
+shader_parameter/deep_ocean_color = Color(0.203922, 0.34902, 0.333333, 1)
 shader_parameter/temperate_color = Color(0.301961, 0.270588, 0.223529, 1)
 shader_parameter/tundra_color = Color(0.550781, 0.484354, 0.223755, 1)
-shader_parameter/cold_color = Color(0.417969, 0.394933, 0.207352, 1)
+shader_parameter/cold_color = Color(0.419608, 0.396078, 0.207843, 1)
 shader_parameter/desert_color = Color(0.819608, 0.694118, 0.529412, 1)
 shader_parameter/dry_color = Color(0.466667, 0.454902, 0.231373, 1)
-shader_parameter/DEBUG_temp_gradient = false
+shader_parameter/DEBUG_temp_gradient = true
 shader_parameter/DEBUG_rainfall_noise = false
 shader_parameter/DEBUG_altitude_noise = false
 
@@ -89,22 +94,33 @@ sky = SubResource("Sky_5sfjl")
 
 [node name="Root" type="Node3D"]
 script = ExtResource("1_kycxp")
+show_temp = true
+landmass_noise = SubResource("FastNoiseLite_kycxp")
+rainfall_noise = SubResource("FastNoiseLite_j287u")
+temperature_noise = SubResource("FastNoiseLite_5sfjl")
+cloud_noise = SubResource("FastNoiseLite_3hfy5")
 
-[node name="Clouds" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.00218832, 0)
+[node name="Celestial Body" type="Node3D" parent="."]
+
+[node name="Clouds" type="MeshInstance3D" parent="Celestial Body"]
+transform = Transform3D(-0.219285, 0, 0.973399, 0, 1, 0, -0.973399, 0, -0.219285, 0, 0.00218832, 0)
 mesh = SubResource("SphereMesh_j287u")
+skeleton = NodePath("../..")
 script = ExtResource("2_sqa0i")
+
+[node name="Planet" type="MeshInstance3D" parent="Celestial Body"]
+transform = Transform3D(0.948062, 0, 0.310405, 0, 1, 0, -0.310405, 0, 0.948062, 0, 0, 0)
+material_override = SubResource("ShaderMaterial_3hfy5")
+mesh = SubResource("SphereMesh_vho56")
+skeleton = NodePath("../..")
+script = ExtResource("2_twpsu")
+rotation_speed = 5.0
 
 [node name="Camera3D" type="Camera3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1.07301)
 visible = false
 
-[node name="Planet" type="MeshInstance3D" parent="."]
-mesh = SubResource("SphereMesh_vho56")
-script = ExtResource("2_twpsu")
-rotation_speed = 5.0
-
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_3hfy5")
 
-[connection signal="ready" from="Planet" to="Planet" method="_on_ready"]
+[connection signal="ready" from="Celestial Body/Planet" to="Celestial Body/Planet" method="_on_ready"]
