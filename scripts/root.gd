@@ -91,7 +91,6 @@ func randomise_noise():
 	#await cloud_noise.changed
 	print("Cloud Seed:", cloud_noise.seed)
 
-
 @export_category("Shader Tools & Settings")
 @export_tool_button("Regenerate", "Callable") var regenerate_shader_action = regenerate_shader
 @export_tool_button("Randomise Noise", "NoiseTexture2D") var randomise_noise_action = randomise_noise
@@ -133,7 +132,6 @@ func randomise_noise():
 @export var cloud_threshold: float = 0.7
 @export_range(0.0, 10000, 2.0) var cloud_pixel_size: int = 600
 @export var cloud_color: Color = Color.WHITE_SMOKE
-
 
 func unhandledinput(event: InputEvent) -> void:
 	if event is InputEventKey and event.is_pressed():

@@ -9,20 +9,21 @@
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_kycxp"]
 noise_type = 3
-seed = 381899643
-frequency = 0.0173
+seed = -2128145356
+frequency = 0.0117
+domain_warp_type = 2
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_j287u"]
-seed = -68769988
+seed = 1882522094
 frequency = 0.0173
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_5sfjl"]
-seed = 1577831285
+seed = -865137434
 frequency = 0.0189
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_3hfy5"]
 noise_type = 3
-seed = 1336062230
+seed = 518130035
 
 [sub_resource type="NoiseTexture2D" id="NoiseTexture2D_kycxp"]
 seamless = true
@@ -33,7 +34,7 @@ render_priority = 0
 shader = ExtResource("1_lrqlo")
 shader_parameter/noise = SubResource("NoiseTexture2D_kycxp")
 shader_parameter/pixel_size = 600
-shader_parameter/cloud_threshold = 0.7
+shader_parameter/cloud_threshold = 0.65
 shader_parameter/cloud_color = Color(0.960784, 0.960784, 0.960784, 1)
 
 [sub_resource type="SphereMesh" id="SphereMesh_j287u"]
@@ -62,7 +63,7 @@ shader_parameter/rainfall_noise = SubResource("NoiseTexture2D_5sfjl")
 shader_parameter/temperature_noise = SubResource("NoiseTexture2D_3hfy5")
 shader_parameter/temperature_noise_impact = 0.5
 shader_parameter/displacement_coefficient = 0.5
-shader_parameter/landmass_threshold = 0.5
+shader_parameter/landmass_threshold = 0.6
 shader_parameter/beach_width = 0.017
 shader_parameter/shore_width = 0.028
 shader_parameter/ocean_width = 0.13
@@ -75,7 +76,7 @@ shader_parameter/tundra_color = Color(0.550781, 0.484354, 0.223755, 1)
 shader_parameter/cold_color = Color(0.419608, 0.396078, 0.207843, 1)
 shader_parameter/desert_color = Color(0.819608, 0.694118, 0.529412, 1)
 shader_parameter/dry_color = Color(0.466667, 0.454902, 0.231373, 1)
-shader_parameter/DEBUG_temp_gradient = true
+shader_parameter/DEBUG_temp_gradient = false
 shader_parameter/DEBUG_rainfall_noise = false
 shader_parameter/DEBUG_altitude_noise = false
 
@@ -94,10 +95,10 @@ sky = SubResource("Sky_5sfjl")
 
 [node name="Root" type="Node3D"]
 script = ExtResource("1_kycxp")
-show_temp = true
 landmass_noise = SubResource("FastNoiseLite_kycxp")
 rainfall_noise = SubResource("FastNoiseLite_j287u")
 temperature_noise = SubResource("FastNoiseLite_5sfjl")
+landmass_threshold = 0.6
 cloud_noise = SubResource("FastNoiseLite_3hfy5")
 
 [node name="Celestial Body" type="Node3D" parent="."]
