@@ -1,3 +1,4 @@
+#@tool
 extends MeshInstance3D
 
 @export_range(0, 100) var rotation_speed: float = 2
