@@ -1,7 +1,7 @@
 shader_type spatial;
 render_mode unshaded;
 
-uniform int pixel_size = 600;
+uniform int pixel_size: hint_range(0, 1000000, 2) = 600;
 
 group_uniforms Noise;
 uniform sampler2D landmass_noise;
@@ -57,18 +57,18 @@ vec3 determine_color(float altitude, float rainfall, float temperature) {
 	if (altitude < landmass_threshold - shore_width) return ocean_color;
 	if (altitude < landmass_threshold) return shore_color;
 	if (altitude < landmass_threshold + beach_width) return beach_color;
-	
+
 	int rainfall_zone = zone(rainfall, 4);
 	int temperature_zone = 4 - zone(temperature, 4);
-	
-	if (temperature_zone < 3 && rainfall_zone < 2) return tundra_color;
-	if (temperature_zone < 3 && rainfall_zone >= 2) return cold_color;
-	if (temperature_zone >= 3 && rainfall_zone >= 2) return temperate_color;
+
+	if (temperature_zone < 2 && rainfall_zone < 2) return tundra_color;
+	if (temperature_zone < 2 && rainfall_zone >= 2) return cold_color;
+	if (temperature_zone >= 2 && rainfall_zone >= 2) return temperate_color;
 	if (temperature_zone == 4 && rainfall_zone < 1) return desert_color;
-	if (temperature_zone >= 3 && rainfall_zone < 2) return dry_color;
-	
-	
-	
+	if (temperature_zone >= 2 && rainfall_zone < 2) return dry_color;
+
+
+
 	return vec3(1.0, 0, 0);
 }
 
@@ -87,13 +87,13 @@ void fragment() {
 	// The UV is a range from 0.0 -> 1.0, so 0.5 is the equator.
 	// By scaling it by 2 we made it a range from 0.0 -> 0.5 into a range from 0.0 -> 1.0
 	float temperature = distance(0.5, UV.y) * 2.0;
-	
+
 	// Our temperature is a hard gradient from 0 at the center to 1 at the top and bottom.
 	// To help break up the hard lines, we add a layer of noise on top (Clamped to 0 and 1).
 	temperature = clamp(temperature + sample(temperature_noise, UV).r * temperature_noise_impact, 0.0, 1.0);
-	
+
 	ALBEDO = determine_color(altitude, rainfall, temperature);
-	
+
 	// DEBUG DISPLAY
 	if (DEBUG_temp_gradient) ALBEDO = vec3(temperature);
 	if (DEBUG_rainfall_noise) ALBEDO = vec3(rainfall);

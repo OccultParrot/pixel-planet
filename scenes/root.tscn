@@ -19,7 +19,7 @@ shader = ExtResource("1_lrqlo")
 shader_parameter/noise = SubResource("NoiseTexture2D_jh1ax")
 shader_parameter/pixel_size = 600
 shader_parameter/cloud_threshold = 0.7
-shader_parameter/cloud_color = Color(0.670588, 0.607843, 0.556863, 1)
+shader_parameter/cloud_color = Color(0.851563, 0.849613, 0.801666, 1)
 
 [sub_resource type="SphereMesh" id="SphereMesh_j287u"]
 material = SubResource("ShaderMaterial_kycxp")
@@ -55,8 +55,8 @@ shader_parameter/pixel_size = 600
 shader_parameter/landmass_noise = SubResource("NoiseTexture2D_kycxp")
 shader_parameter/rainfall_noise = SubResource("NoiseTexture2D_5sfjl")
 shader_parameter/temperature_noise = SubResource("NoiseTexture2D_j287u")
-shader_parameter/temperature_noise_impact = 0.148
-shader_parameter/displacement_coefficient = 0.5
+shader_parameter/temperature_noise_impact = 0.088
+shader_parameter/displacement_coefficient = 0.0
 shader_parameter/landmass_threshold = 0.533
 shader_parameter/beach_width = 0.017
 shader_parameter/shore_width = 0.028
@@ -66,8 +66,8 @@ shader_parameter/shore_color = Color(0.54902, 0.670588, 0.631373, 1)
 shader_parameter/ocean_color = Color(0.294118, 0.447059, 0.431373, 1)
 shader_parameter/deep_ocean_color = Color(0.203705, 0.347656, 0.332892, 1)
 shader_parameter/temperate_color = Color(0.301961, 0.270588, 0.223529, 1)
-shader_parameter/tundra_color = Color(0.8125, 0.938477, 1, 1)
-shader_parameter/cold_color = Color(0.457764, 0.585938, 0.498819, 1)
+shader_parameter/tundra_color = Color(0.550781, 0.484354, 0.223755, 1)
+shader_parameter/cold_color = Color(0.417969, 0.394933, 0.207352, 1)
 shader_parameter/desert_color = Color(0.819608, 0.694118, 0.529412, 1)
 shader_parameter/dry_color = Color(0.466667, 0.454902, 0.231373, 1)
 shader_parameter/DEBUG_temp_gradient = false
@@ -91,17 +91,18 @@ sky = SubResource("Sky_5sfjl")
 script = ExtResource("1_kycxp")
 
 [node name="Clouds" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.00218832, 0)
 mesh = SubResource("SphereMesh_j287u")
 script = ExtResource("2_sqa0i")
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1.07301)
+visible = false
 
 [node name="Planet" type="MeshInstance3D" parent="."]
 mesh = SubResource("SphereMesh_vho56")
 script = ExtResource("2_twpsu")
 rotation_speed = 5.0
-
-[node name="Camera3D" type="Camera3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1.07301)
-visible = false
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_3hfy5")
