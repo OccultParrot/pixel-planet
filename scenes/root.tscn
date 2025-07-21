@@ -1,40 +1,47 @@
-[gd_scene load_steps=22 format=3 uid="uid://dothce4yh3s3l"]
+[gd_scene load_steps=25 format=3 uid="uid://dothce4yh3s3l"]
 
 [ext_resource type="Shader" uid="uid://bwnctdj1bptlq" path="res://shaders/planet.gdshader" id="1_j5px3"]
 [ext_resource type="Script" uid="uid://bgc6ogilues7" path="res://scripts/root.gd" id="1_kycxp"]
 [ext_resource type="Shader" uid="uid://prjw2kdeupum" path="res://shaders/clouds.gdshader" id="1_lrqlo"]
 [ext_resource type="Script" uid="uid://cmgxqquhulqek" path="res://scripts/clouds.gd" id="2_sqa0i"]
 [ext_resource type="Script" uid="uid://c5vm2en76867d" path="res://scripts/planet.gd" id="2_twpsu"]
+[ext_resource type="Script" uid="uid://8fblky83xn6v" path="res://scripts/skybox.gd" id="3_j287u"]
+[ext_resource type="Script" uid="uid://coicub8bgmtyd" path="res://scripts/celestial_body.gd" id="4_5sfjl"]
 [ext_resource type="Shader" uid="uid://d8ntmm6fyn6e" path="res://shaders/sky.gdshader" id="5_jh1ax"]
-
-[sub_resource type="FastNoiseLite" id="FastNoiseLite_kycxp"]
-noise_type = 3
-seed = -2128145356
-frequency = 0.0117
-domain_warp_type = 2
-
-[sub_resource type="FastNoiseLite" id="FastNoiseLite_j287u"]
-seed = 1882522094
-frequency = 0.0173
-
-[sub_resource type="FastNoiseLite" id="FastNoiseLite_5sfjl"]
-seed = -865137434
-frequency = 0.0189
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_3hfy5"]
 noise_type = 3
-seed = 518130035
+frequency = 0.0378
 
-[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_kycxp"]
-seamless = true
+[sub_resource type="NoiseTexture3D" id="NoiseTexture3D_7pvxh"]
 noise = SubResource("FastNoiseLite_3hfy5")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_xsp7o"]
+render_priority = 0
+shader = ExtResource("5_jh1ax")
+shader_parameter/radius = 250.0
+shader_parameter/nebula_noise = SubResource("NoiseTexture3D_7pvxh")
+shader_parameter/pixel_size = 300.0
+shader_parameter/nebula_threshold = 0.6
+
+[sub_resource type="SphereMesh" id="SphereMesh_l5cgh"]
+material = SubResource("ShaderMaterial_xsp7o")
+radius = 250.0
+height = 500.0
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_5sfjl"]
+seed = 1978751662
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_5sfjl"]
+seamless = true
+noise = SubResource("FastNoiseLite_5sfjl")
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_kycxp"]
 render_priority = 0
 shader = ExtResource("1_lrqlo")
-shader_parameter/noise = SubResource("NoiseTexture2D_kycxp")
+shader_parameter/noise = SubResource("NoiseTexture2D_5sfjl")
 shader_parameter/pixel_size = 600
-shader_parameter/cloud_threshold = 0.65
+shader_parameter/cloud_threshold = 0.7
 shader_parameter/cloud_color = Color(0.960784, 0.960784, 0.960784, 1)
 
 [sub_resource type="SphereMesh" id="SphereMesh_j287u"]
@@ -42,28 +49,41 @@ material = SubResource("ShaderMaterial_kycxp")
 radius = 0.55
 height = 1.05
 
-[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_j287u"]
-seamless = true
-noise = SubResource("FastNoiseLite_kycxp")
-
-[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_5sfjl"]
-seamless = true
-noise = SubResource("FastNoiseLite_j287u")
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_y3xxt"]
+noise_type = 3
+seed = -764241648
+frequency = 0.0162
 
 [sub_resource type="NoiseTexture2D" id="NoiseTexture2D_3hfy5"]
 seamless = true
-noise = SubResource("FastNoiseLite_5sfjl")
+noise = SubResource("FastNoiseLite_y3xxt")
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_l5cgh"]
+seed = -1454697203
+frequency = 0.0179
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_7pvxh"]
+seamless = true
+noise = SubResource("FastNoiseLite_l5cgh")
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_dylgi"]
+seed = -679606952
+frequency = 0.0277
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_y3xxt"]
+seamless = true
+noise = SubResource("FastNoiseLite_dylgi")
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_3hfy5"]
 render_priority = 0
 shader = ExtResource("1_j5px3")
 shader_parameter/pixel_size = 600
-shader_parameter/landmass_noise = SubResource("NoiseTexture2D_j287u")
-shader_parameter/rainfall_noise = SubResource("NoiseTexture2D_5sfjl")
-shader_parameter/temperature_noise = SubResource("NoiseTexture2D_3hfy5")
+shader_parameter/landmass_noise = SubResource("NoiseTexture2D_3hfy5")
+shader_parameter/rainfall_noise = SubResource("NoiseTexture2D_7pvxh")
+shader_parameter/temperature_noise = SubResource("NoiseTexture2D_y3xxt")
 shader_parameter/temperature_noise_impact = 0.5
 shader_parameter/displacement_coefficient = 0.5
-shader_parameter/landmass_threshold = 0.6
+shader_parameter/landmass_threshold = 0.5
 shader_parameter/beach_width = 0.017
 shader_parameter/shore_width = 0.028
 shader_parameter/ocean_width = 0.13
@@ -83,45 +103,37 @@ shader_parameter/DEBUG_altitude_noise = false
 [sub_resource type="SphereMesh" id="SphereMesh_vho56"]
 material = SubResource("ShaderMaterial_3hfy5")
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_j287u"]
-shader = ExtResource("5_jh1ax")
-
-[sub_resource type="Sky" id="Sky_5sfjl"]
-sky_material = SubResource("ShaderMaterial_j287u")
-
-[sub_resource type="Environment" id="Environment_3hfy5"]
-background_mode = 2
-sky = SubResource("Sky_5sfjl")
-
 [node name="Root" type="Node3D"]
 script = ExtResource("1_kycxp")
-landmass_noise = SubResource("FastNoiseLite_kycxp")
-rainfall_noise = SubResource("FastNoiseLite_j287u")
-temperature_noise = SubResource("FastNoiseLite_5sfjl")
-landmass_threshold = 0.6
-cloud_noise = SubResource("FastNoiseLite_3hfy5")
 
-[node name="Celestial Body" type="Node3D" parent="."]
+[node name="Skybox" type="MeshInstance3D" parent="."]
+mesh = SubResource("SphereMesh_l5cgh")
+script = ExtResource("3_j287u")
+metadata/_edit_lock_ = true
 
-[node name="Clouds" type="MeshInstance3D" parent="Celestial Body"]
-transform = Transform3D(-0.219285, 0, 0.973399, 0, 1, 0, -0.973399, 0, -0.219285, 0, 0.00218832, 0)
+[node name="CelestialBody" type="Node3D" parent="."]
+script = ExtResource("4_5sfjl")
+
+[node name="Clouds" type="MeshInstance3D" parent="CelestialBody"]
+transform = Transform3D(-0.874154, 0, -0.475337, 0, 1, 0, 0.475337, 0, -0.874154, 0, 0.00218832, 0)
 mesh = SubResource("SphereMesh_j287u")
 skeleton = NodePath("../..")
 script = ExtResource("2_sqa0i")
+cloud_noise = SubResource("FastNoiseLite_5sfjl")
 
-[node name="Planet" type="MeshInstance3D" parent="Celestial Body"]
-transform = Transform3D(0.948062, 0, 0.310405, 0, 1, 0, -0.310405, 0, 0.948062, 0, 0, 0)
+[node name="Planet" type="MeshInstance3D" parent="CelestialBody"]
+transform = Transform3D(-0.978294, 0, 0.187232, 0, 1, 0, -0.187232, 0, -0.978294, 0, 0, 0)
 material_override = SubResource("ShaderMaterial_3hfy5")
 mesh = SubResource("SphereMesh_vho56")
 skeleton = NodePath("../..")
 script = ExtResource("2_twpsu")
+landmass_noise = SubResource("FastNoiseLite_y3xxt")
+rainfall_noise = SubResource("FastNoiseLite_l5cgh")
+temperature_noise = SubResource("FastNoiseLite_dylgi")
 rotation_speed = 5.0
 
 [node name="Camera3D" type="Camera3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1.07301)
 visible = false
 
-[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
-environment = SubResource("Environment_3hfy5")
-
-[connection signal="ready" from="Celestial Body/Planet" to="Celestial Body/Planet" method="_on_ready"]
+[connection signal="ready" from="CelestialBody/Planet" to="CelestialBody/Planet" method="_on_ready"]

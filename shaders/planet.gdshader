@@ -40,7 +40,7 @@ float lerp(float a, float b, float t) {
 }
 
 vec2 pixelate(vec2 pos, float scale) {
-	return floor(pos * scale) / scale;
+	return (floor(pos * scale) + 0.5) / scale;
 }
 
 int zone(float value, int num_zones) {
